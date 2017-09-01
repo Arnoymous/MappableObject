@@ -61,9 +61,9 @@ open class MappableObject: Object, Mappable {
         super.init(realm: realm, schema: schema)
     }
     
-    public func mappingPrimaryKey(map: Map) { }
+    open func mappingPrimaryKey(map: Map) { }
     
-    public func mapping(map: Map) {
+    open func mapping(map: Map) {
         if let primaryKey = type(of: self).primaryKey() {
             switch map.mappingType {
             case .toJSON:
