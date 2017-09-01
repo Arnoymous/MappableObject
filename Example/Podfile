@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'MappableObject_Example' do
+  pod 'MappableObject', :path => '../'
+
+  target 'MappableObject_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end
