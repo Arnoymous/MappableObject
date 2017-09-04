@@ -15,6 +15,9 @@
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
 		607FACEC1AFB9204008FA782 /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* Tests.swift */; };
 		664DBE39EE800E95D1849158 /* Pods_MappableObject_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF33679E1DF3EBC5899F6F0B /* Pods_MappableObject_Example.framework */; };
+		D43445401F5A1DB700AE318A /* Dog.swift in Sources */ = {isa = PBXBuildFile; fileRef = D434453F1F5A1DB700AE318A /* Dog.swift */; };
+		D43445421F5A1E4300AE318A /* Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = D43445411F5A1E4300AE318A /* Person.swift */; };
+		D446FC831F5B1EAA005FE733 /* Cat.swift in Sources */ = {isa = PBXBuildFile; fileRef = D446FC821F5B1EAA005FE733 /* Cat.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,6 +48,9 @@
 		AEBAB36D11711EB8CF57814D /* Pods_MappableObject_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MappableObject_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CEFCF59C13EB9EC9AEB50788 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		CF33679E1DF3EBC5899F6F0B /* Pods_MappableObject_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MappableObject_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D434453F1F5A1DB700AE318A /* Dog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dog.swift; sourceTree = "<group>"; };
+		D43445411F5A1E4300AE318A /* Person.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Person.swift; sourceTree = "<group>"; };
+		D446FC821F5B1EAA005FE733 /* Cat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cat.swift; sourceTree = "<group>"; };
 		D89FE0686F5828B75B3EFADE /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		E9B251E8753B19B7EE5B819F /* Pods-MappableObject_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MappableObject_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MappableObject_Tests/Pods-MappableObject_Tests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -102,8 +108,11 @@
 		607FACD21AFB9204008FA782 /* Example for MappableObject */ = {
 			isa = PBXGroup;
 			children = (
-				607FACD51AFB9204008FA782 /* AppDelegate.swift */,
+				D434453F1F5A1DB700AE318A /* Dog.swift */,
+				D43445411F5A1E4300AE318A /* Person.swift */,
+				D446FC821F5B1EAA005FE733 /* Cat.swift */,
 				607FACD71AFB9204008FA782 /* ViewController.swift */,
+				607FACD51AFB9204008FA782 /* AppDelegate.swift */,
 				607FACD91AFB9204008FA782 /* Main.storyboard */,
 				607FACDC1AFB9204008FA782 /* Images.xcassets */,
 				607FACDE1AFB9204008FA782 /* LaunchScreen.xib */,
@@ -378,6 +387,9 @@
 			files = (
 				607FACD81AFB9204008FA782 /* ViewController.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
+				D446FC831F5B1EAA005FE733 /* Cat.swift in Sources */,
+				D43445421F5A1E4300AE318A /* Person.swift in Sources */,
+				D43445401F5A1DB700AE318A /* Dog.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
