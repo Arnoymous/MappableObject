@@ -10,15 +10,15 @@ import UIKit
 import ObjectMapper
 import RealmSwift
 
-internal class RealmMapper {
+public class RealmMapper {
     
-    static func update<T: MappableObject>(_ object: T, fromJSON JSON: [String:Any], context: RealmMapContext?, realm: Realm?, options: RealmMapOptions?) throws {
+    public static func update<T: MappableObject>(_ object: T, fromJSON JSON: [String:Any], context: RealmMapContext?, realm: Realm?, options: RealmMapOptions?) throws {
         try object.update{
             _ = Mapper(context: RealmMapContext.from(context: context, realm: realm ?? $0.realm, options: options)).map(JSON: JSON, toObject: $0)
         }
     }
     
-    static func getOrCreate<T: MappableObject>(_ type: T.Type? = nil, forPrimaryKey primaryKey: String, realm: Realm?, options: RealmMapOptions?) -> T? {
+    public static func getOrCreate<T: MappableObject>(_ type: T.Type? = nil, forPrimaryKey primaryKey: String, realm: Realm?, options: RealmMapOptions?) -> T? {
         if T.hasPrimaryKey,
             let preferedPrimaryKey = T.preferredPrimaryKey {
             return getOrCreate(type, fromJSON: [preferedPrimaryKey: primaryKey], context: nil, realm: realm, options: options)
@@ -26,7 +26,7 @@ internal class RealmMapper {
         return nil
     }
     
-    static func getOrCreate<T: MappableObject>(_ type: T.Type? = nil, fromJSON JSON: [String:Any], context: RealmMapContext?, realm: Realm?, options: RealmMapOptions?) -> T? {
+    public static func getOrCreate<T: MappableObject>(_ type: T.Type? = nil, fromJSON JSON: [String:Any], context: RealmMapContext?, realm: Realm?, options: RealmMapOptions?) -> T? {
         let context = RealmMapContext.from(context: context, realm: realm, options: options)
         let primaryKey = T.primaryKey()
         let preferredPrimaryKey = T.preferredPrimaryKey
