@@ -109,7 +109,7 @@ extension BaseMappable where Self: MappableObject {
     
     internal func validate(map: Map) {
         if map.mappingType == .fromJSON, !(map.context is RealmMapContext) {
-            print("WARNING: 'MappableObject' needs custom transforms, be sure to import MappableObject when using <- operator")
+            print("WARNING: 'MappableObject' needs custom transforms, be sure to use RealmMap()")
             map.context = RealmMapContext()
         }
     }
