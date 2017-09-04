@@ -60,6 +60,10 @@ public class RealmMapper {
         } catch { }
         return object
     }
+    
+    public static func getOrCreateList<T: MappableObject>(_ type: T.Type? = nil, fromJSON JSON: [String:Any], context: RealmMapContext?, realm: Realm?, options: RealmMapOptions?) -> List<T>? {
+        return ListMappableObjectTransform<T>(context: RealmMapContext.from(context: context, realm: realm, options: options)).transformFromJSON(JSON)
+    }
 }
 
 extension BaseMappable where Self: MappableObject {
