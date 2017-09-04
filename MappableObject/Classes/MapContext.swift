@@ -26,6 +26,17 @@ open class RealmMapContext: MapContext {
         self.realm = realm
         self.options = options
     }
+    
+    public static func from(context: RealmMapContext?, realm: Realm?, options: RealmMapOptions?) -> RealmMapContext {
+        let context = context ?? RealmMapContext()
+        if let options = options {
+            context.options = options
+        }
+        if let realm = realm {
+            context.realm = realm
+        }
+        return context
+    }
 }
 
 public struct RealmMapOptions: OptionSet {
