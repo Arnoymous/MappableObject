@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'MappableObject'
-  s.version          = '0.2.1'
+  s.version          = '0.2.2'
   s.summary          = 'A Realm extension that serializes arbitrary JSON into MappableObject class'
 
 # This description is used to generate tags and improve search results.

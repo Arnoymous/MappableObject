@@ -12,20 +12,9 @@ import RealmSwift
 
 internal class RealmMapper {
     
-    static func mapContext(from context: RealmMapContext?, realm: Realm?, options: RealmMapOptions?) -> RealmMapContext {
-        let context = context ?? RealmMapContext()
-        if let options = options {
-            context.options = options
-        }
-        if let realm = realm {
-            context.realm = realm
-        }
-        return context
-    }
-    
     static func update<T: MappableObject>(_ object: T, fromJSON JSON: [String:Any], context: RealmMapContext?, realm: Realm?, options: RealmMapOptions?) throws {
         try object.update{
-            _ = Mapper(context: mapContext(from: context, realm: realm ?? $0.realm, options: options)).map(JSON: JSON, toObject: $0)
+            _ = Mapper(context: RealmMapContext.from(context: context, realm: realm ?? $0.realm, options: options)).map(JSON: JSON, toObject: $0)
         }
     }
     
@@ -38,7 +27,7 @@ internal class RealmMapper {
     }
     
     static func getOrCreate<T: MappableObject>(_ type: T.Type? = nil, fromJSON JSON: [String:Any], context: RealmMapContext?, realm: Realm?, options: RealmMapOptions?) -> T? {
-        let context = mapContext(from: context, realm: realm, options: options)
+        let context = RealmMapContext.from(context: context, realm: realm, options: options)
         let primaryKey = T.primaryKey()
         let preferredPrimaryKey = T.preferredPrimaryKey
         let sync = context.options.contains(.sync)
