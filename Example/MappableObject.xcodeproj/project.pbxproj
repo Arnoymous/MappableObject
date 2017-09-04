@@ -15,9 +15,6 @@
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
 		607FACEC1AFB9204008FA782 /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* Tests.swift */; };
 		664DBE39EE800E95D1849158 /* Pods_MappableObject_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF33679E1DF3EBC5899F6F0B /* Pods_MappableObject_Example.framework */; };
-		D43445401F5A1DB700AE318A /* Dog.swift in Sources */ = {isa = PBXBuildFile; fileRef = D434453F1F5A1DB700AE318A /* Dog.swift */; };
-		D43445421F5A1E4300AE318A /* Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = D43445411F5A1E4300AE318A /* Person.swift */; };
-		D446FC831F5B1EAA005FE733 /* Cat.swift in Sources */ = {isa = PBXBuildFile; fileRef = D446FC821F5B1EAA005FE733 /* Cat.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -31,7 +28,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0C3A06B3093E69BFE72860DE /* Pods_MappableObject_Example_macTest.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MappableObject_Example_macTest.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		48DD63D8412852DFBEBCE919 /* Pods-MappableObject_Example-macTest.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MappableObject_Example-macTest.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MappableObject_Example-macTest/Pods-MappableObject_Example-macTest.debug.xcconfig"; sourceTree = "<group>"; };
 		5CE957089C749A5A2F7E46A5 /* Pods-MappableObject_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MappableObject_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MappableObject_Example/Pods-MappableObject_Example.debug.xcconfig"; sourceTree = "<group>"; };
+		5D0658AC2C166E8361959E0A /* Pods_macTest.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_macTest.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACD01AFB9204008FA782 /* MappableObject_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MappableObject_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACD41AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACD51AFB9204008FA782 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -42,17 +42,17 @@
 		607FACE51AFB9204008FA782 /* MappableObject_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MappableObject_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACEA1AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACEB1AFB9204008FA782 /* Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
+		63180FB622A6E5D321EDD3EF /* Pods-MappableObject_Example-macTest.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MappableObject_Example-macTest.release.xcconfig"; path = "Pods/Target Support Files/Pods-MappableObject_Example-macTest/Pods-MappableObject_Example-macTest.release.xcconfig"; sourceTree = "<group>"; };
 		7234824607F32E73D3478521 /* Pods-MappableObject_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MappableObject_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-MappableObject_Example/Pods-MappableObject_Example.release.xcconfig"; sourceTree = "<group>"; };
 		85B4E5F916B23B086794B2FD /* Pods-MappableObject_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MappableObject_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MappableObject_Tests/Pods-MappableObject_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		9497C60E307DFFB2520618B4 /* MappableObject.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = MappableObject.podspec; path = ../MappableObject.podspec; sourceTree = "<group>"; };
+		9BC199E84D56D3F193D49021 /* Pods-macTest.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macTest.debug.xcconfig"; path = "Pods/Target Support Files/Pods-macTest/Pods-macTest.debug.xcconfig"; sourceTree = "<group>"; };
 		AEBAB36D11711EB8CF57814D /* Pods_MappableObject_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MappableObject_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CEFCF59C13EB9EC9AEB50788 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		CF33679E1DF3EBC5899F6F0B /* Pods_MappableObject_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MappableObject_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D434453F1F5A1DB700AE318A /* Dog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dog.swift; sourceTree = "<group>"; };
-		D43445411F5A1E4300AE318A /* Person.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Person.swift; sourceTree = "<group>"; };
-		D446FC821F5B1EAA005FE733 /* Cat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cat.swift; sourceTree = "<group>"; };
 		D89FE0686F5828B75B3EFADE /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		E9B251E8753B19B7EE5B819F /* Pods-MappableObject_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MappableObject_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MappableObject_Tests/Pods-MappableObject_Tests.release.xcconfig"; sourceTree = "<group>"; };
+		FC483B10EC60D8471D22BC98 /* Pods-macTest.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macTest.release.xcconfig"; path = "Pods/Target Support Files/Pods-macTest/Pods-macTest.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,6 +80,8 @@
 			children = (
 				CF33679E1DF3EBC5899F6F0B /* Pods_MappableObject_Example.framework */,
 				AEBAB36D11711EB8CF57814D /* Pods_MappableObject_Tests.framework */,
+				0C3A06B3093E69BFE72860DE /* Pods_MappableObject_Example_macTest.framework */,
+				5D0658AC2C166E8361959E0A /* Pods_macTest.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -108,9 +110,6 @@
 		607FACD21AFB9204008FA782 /* Example for MappableObject */ = {
 			isa = PBXGroup;
 			children = (
-				D434453F1F5A1DB700AE318A /* Dog.swift */,
-				D43445411F5A1E4300AE318A /* Person.swift */,
-				D446FC821F5B1EAA005FE733 /* Cat.swift */,
 				607FACD71AFB9204008FA782 /* ViewController.swift */,
 				607FACD51AFB9204008FA782 /* AppDelegate.swift */,
 				607FACD91AFB9204008FA782 /* Main.storyboard */,
@@ -164,6 +163,10 @@
 				7234824607F32E73D3478521 /* Pods-MappableObject_Example.release.xcconfig */,
 				85B4E5F916B23B086794B2FD /* Pods-MappableObject_Tests.debug.xcconfig */,
 				E9B251E8753B19B7EE5B819F /* Pods-MappableObject_Tests.release.xcconfig */,
+				48DD63D8412852DFBEBCE919 /* Pods-MappableObject_Example-macTest.debug.xcconfig */,
+				63180FB622A6E5D321EDD3EF /* Pods-MappableObject_Example-macTest.release.xcconfig */,
+				9BC199E84D56D3F193D49021 /* Pods-macTest.debug.xcconfig */,
+				FC483B10EC60D8471D22BC98 /* Pods-macTest.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -218,7 +221,7 @@
 		607FACC81AFB9204008FA782 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0720;
+				LastSwiftUpdateCheck = 0830;
 				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = CocoaPods;
 				TargetAttributes = {
@@ -387,9 +390,6 @@
 			files = (
 				607FACD81AFB9204008FA782 /* ViewController.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
-				D446FC831F5B1EAA005FE733 /* Cat.swift in Sources */,
-				D43445421F5A1E4300AE318A /* Person.swift in Sources */,
-				D43445401F5A1DB700AE318A /* Dog.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -470,11 +470,14 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
 			};
 			name = Debug;
 		};
@@ -510,11 +513,14 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				TVOS_DEPLOYMENT_TARGET = 9.0;
 				VALIDATE_PRODUCT = YES;
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
 			};
 			name = Release;
 		};

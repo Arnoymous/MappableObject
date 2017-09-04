@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'MappableObject'
-  s.version          = '0.2'
+  s.version          = '0.2.1'
   s.summary          = 'A Realm extension that serializes arbitrary JSON into MappableObject class'
 
 # This description is used to generate tags and improve search results.
@@ -28,7 +28,9 @@ TODO: Add long description of the pod here.
   s.source           = { :git => 'https://github.com/Arnoymous/MappableObject.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/arnauddorgans'
 
-  s.ios.deployment_target = '9.0'
+  s.watchos.deployment_target = '2.0'
+  s.ios.deployment_target = '8.0'
+#s.osx.deployment_target = '10.9'
   s.tvos.deployment_target = '9.0'
 
   s.source_files = 'MappableObject/Classes/**/*'
