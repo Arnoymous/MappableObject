@@ -11,23 +11,21 @@ import RealmSwift
 import ObjectMapper
 
 open class RealmMapContext: MapContext {
-
-    var realm: Realm?
-    var options: RealmMapOptions = []
+    
+    public var realm: Realm?
+    public var options: RealmMapOptions = []
     
     public init() { }
     
-    internal convenience init(options: RealmMapOptions) {
-        self.init(options: options, realm: nil)
-    }
-    
-    internal convenience init(options: RealmMapOptions, realm: Realm?) {
+    internal convenience init(options: RealmMapOptions? = nil, realm: Realm? = nil) {
         self.init()
         self.realm = realm
-        self.options = options
+        if let options = options {
+            self.options = options
+        }
     }
     
-    internal static func from(object: MappableObject? = nil, context: RealmMapContext? = nil, realm: Realm? = nil, options: RealmMapOptions? = nil) -> RealmMapContext {
+    public static func from(context: RealmMapContext? = nil, realm: Realm? = nil, options: RealmMapOptions? = nil, object: MappableObject? = nil) -> RealmMapContext {
         let context = context ?? RealmMapContext()
         if let options = options {
             context.options = options

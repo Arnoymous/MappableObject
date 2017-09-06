@@ -20,10 +20,10 @@ extension Realm {
     }
 }
 
-extension ThreadConfined where Self: Object {
-    public func update(block: (Self)->Void) throws {
-        if let realm = self.realm {
-            try realm.safeWrite{
+extension ThreadConfined where Self: MappableObject {
+    internal func update(realm: Realm? = nil, block: (Self)->Void) throws {
+        if self.isSync {
+            try ((realm ?? self.realm) ?? Realm()).safeWrite{
                 block(self)
             }
         } else {
@@ -51,7 +51,7 @@ extension BaseMappable where Self: MappableObject {
     internal func validate(map: Map) {
         if map.mappingType == .fromJSON {
             if let context = map.context as? RealmMapContext {
-                map.context = RealmMapContext.from(object: self, context: context)
+                map.context = RealmMapContext.from(context: context, object: self)
                 if self.isSync, !context.options.contains(.sync) {
                     context.options = context.options.union(.sync)
                 }
