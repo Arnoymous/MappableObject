@@ -125,7 +125,7 @@ let mapper = Mapper<Person>(options: .sync)
 var person = mapper.map(JSON: ["full_name": "Arnaud Dorgans", "dogs": [["name": "Sansa", "age": 1]]])! 
 // get or create Person in DB with 'Arnaud Dorgans' primary key & update 'dogs' property
 let realm = try! Realm()
-realm.write{
+try! realm.write{
    person = mapper.map(JSON: ["full_name": "Arnaud Dorgans"], toObject: person) 
    //dogs won't be updated  cause 'dogs' key isn't provided
    person = mapper.map(JSON: ["full_name": "Arnaud Dorgans", "dogs": []], toObject: person) 
@@ -137,7 +137,7 @@ Override
 ```swift
 var person = Mapper<Person>(options: .sync).map(JSON: ["full_name": "Arnaud Dorgans", "dogs": [["name": "Sansa", "age": 1]]])!
 let realm = try! Realm()
-realm.write{
+try! realm.write{
    person = Mapper<Person>(options: [.sync, .override]).map(JSON: ["full_name": "Arnaud Dorgans"], toObject: person) 
    //dogs will be reset to default value [] cause 'dogs' key isn't provided
 }
