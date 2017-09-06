@@ -82,15 +82,15 @@ internal class RealmMapper<T: MappableObject> {
 }
 
 extension Mapper where N: MappableObject {
-    public convenience init(context: RealmMapContext? = nil, shouldIncludeNilValues: Bool = false, realm: Realm? = nil) {
-        self.init(context: context, shouldIncludeNilValues: shouldIncludeNilValues, realm: realm, options: nil)
+    public convenience init(context: RealmMapContext? = nil, realm: Realm?, shouldIncludeNilValues: Bool = false) {
+        self.init(context: context, realm: realm, options: nil, shouldIncludeNilValues: shouldIncludeNilValues)
     }
     
-    public convenience init(context: RealmMapContext? = nil, shouldIncludeNilValues: Bool = false, realm: Realm? = nil, options: RealmMapOptions) {
-        self.init(context: context, shouldIncludeNilValues: shouldIncludeNilValues, realm: realm, options: options as RealmMapOptions?)
+    public convenience init(context: RealmMapContext? = nil, realm: Realm? = nil, options: RealmMapOptions, shouldIncludeNilValues: Bool = false) {
+        self.init(context: context, realm: realm, options: options as RealmMapOptions?, shouldIncludeNilValues: shouldIncludeNilValues)
     }
     
-    private convenience init(context: RealmMapContext?, shouldIncludeNilValues: Bool = false, realm: Realm?, options: RealmMapOptions?) {
-        self.init(context: RealmMapContext.from(context: context, realm: realm, options: options), shouldIncludeNilValues: shouldIncludeNilValues)
+    private convenience init(context: RealmMapContext?, realm: Realm?, options: RealmMapOptions?, shouldIncludeNilValues: Bool = false) {
+        self.init(context: RealmMapContext.from(context: context, realm: realm, options: options) as MapContext, shouldIncludeNilValues: shouldIncludeNilValues)
     }
 }
