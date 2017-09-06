@@ -121,13 +121,14 @@ let person = Mapper<Person>(options: [.sync, .copy]).map(JSON: ["full_name": "Ar
 #### Update
 
 ```swift
-var person = Mapper<Person>(options: .sync).map(JSON: ["full_name": "Arnaud Dorgans", "dogs": [["name": "Sansa", "age": 1]]])! 
+let mapper = Mapper<Person>(options: .sync)
+var person = mapper.map(JSON: ["full_name": "Arnaud Dorgans", "dogs": [["name": "Sansa", "age": 1]]])! 
 // get or create Person in DB with 'Arnaud Dorgans' primary key & update 'dogs' property
 let realm = try! Realm()
 realm.write{
-   person = Mapper<Person>(options: .sync).map(JSON: ["full_name": "Arnaud Dorgans"], toObject: person) 
+   person = mapper.map(JSON: ["full_name": "Arnaud Dorgans"], toObject: person) 
    //dogs won't be updated  cause 'dogs' key isn't provided
-   person = Mapper<Person>(options: .sync).map(JSON: ["full_name": "Arnaud Dorgans", "dogs": []], toObject: person) 
+   person = mapper.map(JSON: ["full_name": "Arnaud Dorgans", "dogs": []], toObject: person) 
    //dogs will be updated cause 'dogs' key is provided
 }
 ```
