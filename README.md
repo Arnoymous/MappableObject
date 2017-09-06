@@ -20,9 +20,129 @@ it, simply add the following line to your Podfile:
 pod "MappableObject"
 ```
 
+## Usage
+
+#### Object without primaryKey
+```swift
+class Cat: MappableObject {
+    
+    dynamic var name: String = ""
+    
+    override func mapping(map: Map) {
+        super.mapping(map: map)
+        
+        name <- map["name"]
+    }
+}
+```
+
+#### Object with primaryKey
+```swift
+class Dog: MappableObject {
+    
+    dynamic var name: String = ""
+    dynamic var age: Int = 0
+    
+    override class func primaryKey() -> String? {
+        return "name"
+    }
+    
+    override func mappingPrimaryKey(map: Map) {
+        name <- map["name"]
+    }
+    
+    override func mapping(map: Map) {
+        super.mapping(map: map)
+        
+        age <- map["age"]
+    }
+}
+```
+
+#### Object with primaryKey different in JSON
+```swift
+class Person: MappableObject {
+    
+    dynamic var name: String = ""
+    let dogs = List<Dog>()
+    
+    override class func primaryKey() -> String? {
+        return "name"
+    }
+    
+    override class func jsonPrimaryKey() -> String? {
+        return "full_name"
+    }
+    
+    override func mappingPrimaryKey(map: Map) {
+        name <- map["full_name"]
+    }
+    
+    override func mapping(map: Map) {
+        super.mapping(map: map)
+        
+        dogs <- map["dogs"]
+    }
+}
+```
+
+#### Custom MapContext
+```swift
+class CustomContext: RealmMapContext {
+    
+    var customValue: String
+    
+    init(customValue: String) {
+        self.customValue = customValue
+        super.init()
+    }
+}
+```
+
+#### Mapper
+Map
+```swift
+let person = Mapper<Person>().map(JSON: ["full_name": "Arnaud Dorgans"])
+```
+
+Map sync with DB
+```swift
+let person = Mapper<Person>(options: .sync).map(JSON: ["full_name": "Arnaud Dorgans"])
+//get or create Person in DB with 'Arnaud Dorgans' primary key
+```
+
+Map sync, copy with DB
+```swift
+let person = Mapper<Person>(options: [.sync, .copy]).map(JSON: ["full_name": "Arnaud Dorgans"]) 
+//get Person from DB with 'Arnaud Dorgans' primary key, or create Person from JSON detached from Realm
+//and then update detached object from JSON
+```
+
+#### Update
+
+```swift
+var person = Mapper<Person>(options: .sync).map(JSON: ["full_name": "Arnaud Dorgans", "dogs": [["name": "Sansa", "age": 1]]])! 
+// get or create Person in DB with 'Arnaud Dorgans' primary key & update 'dogs' property
+person.update{
+   person = Mapper<Person>(options: .sync).map(JSON: ["full_name": "Arnaud Dorgans"], toObject: $0) 
+   //dogs won't be updated  cause 'dogs' key isn't provided
+   person = Mapper<Person>(options: .sync).map(JSON: ["full_name": "Arnaud Dorgans", "dogs": []], toObject: $0) 
+   //dogs will be updated cause 'dogs' key is provided
+}
+```
+
+Override
+```swift
+var person = Mapper<Person>(options: .sync).map(JSON: ["full_name": "Arnaud Dorgans", "dogs": [["name": "Sansa", "age": 1]]])!
+person.update{
+   person = Mapper<Person>(options: [.sync, .override]).map(JSON: ["full_name": "Arnaud Dorgans"], toObject: $0) 
+   //dogs will be reset to default value [] cause 'dogs' key isn't provided
+}
+```
+
 ## Author
 
-Arnoymous, ineox@me.com
+Arnoymous, arnaud.dorgans@gmail.com
 
 ## License
 
