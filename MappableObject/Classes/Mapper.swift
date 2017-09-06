@@ -28,7 +28,7 @@ internal class RealmMapper<T: MappableObject> {
     }
     
     func map(JSONObject: Any?, options: RealmMapOptions? = nil) throws -> T? {
-        let context = RealmMapContext.from(object: nil, context: self.context, realm: self.realm, options: options)
+        let context = RealmMapContext.from(context: self.context, realm: self.realm, options: options)
         self.context = context
         let realm = try context.realm ?? Realm()
         self.realm = realm
@@ -51,7 +51,7 @@ internal class RealmMapper<T: MappableObject> {
                 }
             }
             if let _object = object ?? T(map: self.map(fromJSONObject: JSONObject, context: context)) {
-                _ = Mapper<T>(context: self.context).map(JSONObject: JSONObject, toObject: _object)
+                _ = Mapper<T>(context: self.context, shouldIncludeNilValues: self.shouldIncludeNilValues).map(JSONObject: JSONObject, toObject: _object)
                 if sync && !copy {
                     realm.add(_object, update: T.hasPrimaryKey)
                 }
@@ -62,7 +62,7 @@ internal class RealmMapper<T: MappableObject> {
     }
     
     private func map(fromJSONObject JSONObject: Any?, context: RealmMapContext) -> Map {
-        return Map(mappingType: .fromJSON, JSON: (JSONObject as? [String:Any]) ?? [:], context: context, shouldIncludeNilValues: false)
+        return Map(mappingType: .fromJSON, JSON: (JSONObject as? [String:Any]) ?? [:], context: context, shouldIncludeNilValues: self.shouldIncludeNilValues)
     }
     
     private func jsonObject(fromJSONObject JSONObject: Any?, context: RealmMapContext) -> Any? {
@@ -73,7 +73,7 @@ internal class RealmMapper<T: MappableObject> {
                     .filter{_JSON[$0] != nil}
                     .forEach{ key in
                         JSON[key] = _JSON[key]
-                    }
+                }
             }
             return JSON
         }
@@ -82,6 +82,32 @@ internal class RealmMapper<T: MappableObject> {
 }
 
 extension Mapper where N: MappableObject {
+    
+    public var realm: Realm? {
+        get {
+            return (self.context as? RealmMapContext)?.realm
+        } set {
+            if let context = self.context as? RealmMapContext {
+                context.realm = newValue
+            } else {
+                self.context = RealmMapContext(realm: newValue)
+            }
+        }
+    }
+    
+    public var options: RealmMapOptions? {
+        get {
+            return (self.context as? RealmMapContext)?.options
+        } set {
+            let options = newValue ?? []
+            if let context = self.context as? RealmMapContext {
+                context.options = options
+            } else {
+                self.context = RealmMapContext(options: options)
+            }
+        }
+    }
+    
     public convenience init(context: RealmMapContext? = nil, realm: Realm?, shouldIncludeNilValues: Bool = false) {
         self.init(context: context, realm: realm, options: nil, shouldIncludeNilValues: shouldIncludeNilValues)
     }
