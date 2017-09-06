@@ -8,131 +8,89 @@
 
 import UIKit
 import ObjectMapper
+import Realm
 import RealmSwift
 
-public class RealmMapper {
+internal class RealmMapper<T: MappableObject> {
     
-    public static func update<T: MappableObject>(_ object: T, fromJSON JSON: [String:Any], context: RealmMapContext?, realm: Realm?, options: RealmMapOptions?) throws {
-        try update(object, fromJSONObject: JSON, context: context, realm: realm, options: options)
+    var context: RealmMapContext?
+    var realm: Realm?
+    var shouldIncludeNilValues: Bool
+    
+    init(context: RealmMapContext? = nil, realm: Realm? = nil, shouldIncludeNilValues: Bool = false) {
+        self.context = context
+        self.realm = realm
+        self.shouldIncludeNilValues = shouldIncludeNilValues
     }
     
-    public static func update<T: MappableObject>(_ object: T, fromJSONObject JSONObject: Any?, context: RealmMapContext?, realm: Realm?, options: RealmMapOptions?) throws {
-        try object.update{
-            _ = Mapper(context: RealmMapContext.from(context: context, realm: realm ?? $0.realm, options: options)).map(JSONObject: JSONObject, toObject: $0)
-        }
+    convenience init(map: Map) {
+        self.init(context: map.context as? RealmMapContext, realm: nil, shouldIncludeNilValues: map.shouldIncludeNilValues)
     }
     
-    public static func getOrCreate<T: MappableObject>(_ type: T.Type? = nil, forPrimaryKey primaryKey: String, realm: Realm?, options: RealmMapOptions?) -> T? {
-        if T.hasPrimaryKey,
-            let preferedPrimaryKey = T.preferredPrimaryKey {
-            return getOrCreate(type, fromJSON: [preferedPrimaryKey: primaryKey], context: nil, realm: realm, options: options)
-        }
-        return nil
-    }
-    
-    public static func getOrCreate<T: MappableObject>(_ type: T.Type? = nil, fromJSON JSON: [String:Any], context: RealmMapContext?, realm: Realm?, options: RealmMapOptions?) -> T? {
-        return getOrCreate(type, fromJSONObject: JSON, context: context, realm: realm, options: options)
-    }
-    
-    public static func getOrCreate<T: MappableObject>(_ type: T.Type? = nil, fromJSONObject JSONObject: Any?, context: RealmMapContext?, realm: Realm?, options: RealmMapOptions?) -> T? {
+    func map(JSONObject: Any?, options: RealmMapOptions? = nil) throws -> T? {
+        let context = RealmMapContext.from(object: nil, context: self.context, realm: self.realm, options: options)
+        self.context = context
+        let realm = try context.realm ?? Realm()
+        self.realm = realm
+        let JSONObject = self.jsonObject(fromJSONObject: JSONObject, context: context)
         
-        let context = RealmMapContext.from(context: context, realm: realm, options: options)
-        let primaryKey = T.primaryKey()
         let preferredPrimaryKey = T.preferredPrimaryKey
         let sync = context.options.contains(.sync)
+        let copy = context.options.contains(.copy)
         var object: T?
-        do {
-            let realm = try context.realm ?? Realm()
-            try realm.safeWrite {
-                if T.hasPrimaryKey,
-                    sync,
-                    let preferredPrimaryKey = preferredPrimaryKey,
-                    let primaryValue = (JSONObject as? [String:Any])?[preferredPrimaryKey],
-                    let savedObject = realm.object(ofType: T.self, forPrimaryKey: primaryValue) {
+        try realm.safeWrite {
+            if T.hasPrimaryKey,
+                sync,
+                let preferredPrimaryKey = preferredPrimaryKey,
+                let primaryValue = (JSONObject as? [String:Any])?[preferredPrimaryKey],
+                let savedObject = realm.object(ofType: T.self, forPrimaryKey: primaryValue) {
+                if !copy {
                     object = savedObject
-                }
-                if let object = object {
-                    try object.update(fromJSONObject: JSONObject, context: context)
                 } else {
-                    object = Mapper<T>(context: context).map(JSONObject: JSONObject)
-                }
-                if sync {
-                    if T.hasPrimaryKey,
-                        let primaryKey = primaryKey,
-                        let preferredPrimaryKey = preferredPrimaryKey, object?[primaryKey] == nil {
-                        print("WARNING: '\(T.self)' object can't be saved: primaryKey '\(preferredPrimaryKey)' is needed")
-                    } else if let object = object {
-                        realm.add(object, update: T.hasPrimaryKey)
-                    }
+                    object = T(value: savedObject, schema: RLMSchema.partialShared())
                 }
             }
-        } catch { }
+            if let _object = object ?? T(map: self.map(fromJSONObject: JSONObject, context: context)) {
+                _ = Mapper<T>(context: self.context).map(JSONObject: JSONObject, toObject: _object)
+                if sync && !copy {
+                    realm.add(_object, update: T.hasPrimaryKey)
+                }
+                object = _object
+            }
+        }
         return object
     }
     
-    public static func getOrCreateList<T: MappableObject>(_ type: T.Type? = nil, fromJSON JSON: [[String:Any]], context: RealmMapContext?, realm: Realm?, options: RealmMapOptions?) -> List<T>? {
-        return getOrCreateList(type, fromJSONObject: JSON, context: context, realm: realm, options: options)
+    private func map(fromJSONObject JSONObject: Any?, context: RealmMapContext) -> Map {
+        return Map(mappingType: .fromJSON, JSON: (JSONObject as? [String:Any]) ?? [:], context: context, shouldIncludeNilValues: false)
     }
     
-    public static func getOrCreateList<T: MappableObject>(_ type: T.Type? = nil, fromJSONObject JSONObject: Any?, context: RealmMapContext?, realm: Realm?, options: RealmMapOptions?) -> List<T>? {
-        return ListMappableObjectTransform<T>(context: RealmMapContext.from(context: context, realm: realm, options: options)).transformFromJSON(JSONObject)
+    private func jsonObject(fromJSONObject JSONObject: Any?, context: RealmMapContext) -> Any? {
+        if context.options.contains(.override) {
+            var JSON = T().toJSON(shouldIncludeNilValues: true)
+            if var _JSON = JSONObject as? [String:Any] {
+                JSON.map{ $0.key }
+                    .filter{_JSON[$0] != nil}
+                    .forEach{ key in
+                        JSON[key] = _JSON[key]
+                    }
+            }
+            return JSON
+        }
+        return JSONObject
     }
-
 }
 
-extension BaseMappable where Self: MappableObject {
-    
-    internal static var hasPrimaryKey: Bool {
-        return self.primaryKey() != nil
+extension Mapper where N: MappableObject {
+    public convenience init(context: RealmMapContext? = nil, shouldIncludeNilValues: Bool = false, realm: Realm? = nil) {
+        self.init(context: context, shouldIncludeNilValues: shouldIncludeNilValues, realm: realm, options: nil)
     }
     
-    internal static var preferredPrimaryKey: String? {
-        return self.jsonPrimaryKey() ?? self.primaryKey()
+    public convenience init(context: RealmMapContext? = nil, shouldIncludeNilValues: Bool = false, realm: Realm? = nil, options: RealmMapOptions) {
+        self.init(context: context, shouldIncludeNilValues: shouldIncludeNilValues, realm: realm, options: options as RealmMapOptions?)
     }
     
-    public func update(fromJSON JSON: [String:Any], context: RealmMapContext? = nil, realm: Realm? = nil) throws {
-        try update(fromJSONObject: JSON, context: context, realm: realm)
-    }
-    
-    public func update(fromJSON JSON: [String:Any], context: RealmMapContext? = nil, realm: Realm? = nil, options: RealmMapOptions) throws {
-        try update(fromJSONObject: JSON, context: context, realm: realm, options: options)
-    }
-    
-    public func update(fromJSONObject JSONObject: Any?, context: RealmMapContext? = nil, realm: Realm? = nil) throws {
-        try RealmMapper.update(self, fromJSONObject: JSONObject, context: context, realm: realm, options: nil)
-    }
-    
-    public func update(fromJSONObject JSONObject: Any?, context: RealmMapContext? = nil, realm: Realm? = nil, options: RealmMapOptions) throws {
-        try RealmMapper.update(self, fromJSONObject: JSONObject, context: context, realm: realm, options: options)
-    }
-    
-    public static func getOrCreate(forPrimaryKey primaryKey: String, realm: Realm? = nil) -> Self? {
-        return getOrCreate(forPrimaryKey: primaryKey, realm: realm, options: .sync)
-    }
-    
-    public static func getOrCreate(forPrimaryKey primaryKey: String, realm: Realm? = nil, options: RealmMapOptions) -> Self? {
-        return RealmMapper.getOrCreate(forPrimaryKey: primaryKey, realm: realm, options: options)
-    }
-    
-    public static func getOrCreate(fromJSON JSON: [String:Any], context: RealmMapContext? = nil, realm: Realm? = nil) -> Self? {
-        return getOrCreate(fromJSONObject: JSON, context: context, realm: realm)
-    }
-    
-    public static func getOrCreate(fromJSON JSON: [String:Any], context: RealmMapContext? = nil, realm: Realm? = nil, options: RealmMapOptions) -> Self? {
-        return getOrCreate(fromJSONObject: JSON, context: context, realm: realm, options: options)
-    }
-    
-    public static func getOrCreate(fromJSONObject JSONObject: Any?, context: RealmMapContext? = nil, realm: Realm? = nil) -> Self? {
-        return RealmMapper.getOrCreate(fromJSONObject: JSONObject, context: context, realm: realm, options: context == nil ? RealmMapOptions.sync : nil)
-    }
-    public static func getOrCreate(fromJSONObject JSONObject: Any?, context: RealmMapContext? = nil, realm: Realm? = nil, options: RealmMapOptions) -> Self? {
-        return RealmMapper.getOrCreate(fromJSONObject: JSONObject, context: context, realm: realm, options: options)
-    }
-    
-    internal func validate(map: Map) {
-        if map.mappingType == .fromJSON, !(map.context is RealmMapContext) {
-            print("WARNING: 'MappableObject' needs custom transforms, be sure to use RealmMap()")
-            map.context = RealmMapContext()
-        }
+    private convenience init(context: RealmMapContext?, shouldIncludeNilValues: Bool = false, realm: Realm?, options: RealmMapOptions?) {
+        self.init(context: RealmMapContext.from(context: context, realm: realm, options: options), shouldIncludeNilValues: shouldIncludeNilValues)
     }
 }

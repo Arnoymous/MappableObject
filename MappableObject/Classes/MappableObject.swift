@@ -11,10 +11,18 @@ import Realm
 import RealmSwift
 import ObjectMapper
 
-open class MappableObject: Object, Mappable {
+open class MappableObject: Object, Mappable, StaticMappable {
     
     open class func jsonPrimaryKey() -> String? {
         return nil
+    }
+    
+    private static func _objectForMapping(map: Map) -> Self? {
+        return try! RealmMapper(map: map).map(JSONObject: map.JSON)
+    }
+    
+    public class func objectForMapping(map: Map) -> BaseMappable? {
+        return _objectForMapping(map: map)
     }
     
     open func mappingPrimaryKey(map: Map) { }
@@ -29,7 +37,7 @@ open class MappableObject: Object, Mappable {
             case .toJSON:
                 var value = self[primaryKey]
                 value <- map[preferedPrimaryKey]
-            case .fromJSON where self.realm == nil:
+            case .fromJSON where !self.isSync:
                 self.mappingPrimaryKey(map: map)
             default:
                 break
@@ -37,15 +45,12 @@ open class MappableObject: Object, Mappable {
         }
     }
     
-    public var json: [String:Any] {
-        var JSON = [String:Any]()
-        try? self.update {
-            JSON = $0.toJSON()
+    required public init?(map: Map) {
+        if type(of: self).hasPrimaryKey,
+            let preferredPrimaryKey = type(of: self).preferredPrimaryKey,
+            map.JSON[preferredPrimaryKey] == nil {
+            return nil
         }
-        return JSON
-    }
-    
-    public required init?(map: Map) {
         super.init()
     }
     
