@@ -108,19 +108,35 @@ let person = Mapper<Person>().map(JSON: ["full_name": "Arnaud Dorgans"])
 Map sync with DB
 ```swift
 let person = Mapper<Person>(options: .sync).map(JSON: ["full_name": "Arnaud Dorgans"])
+//get or create Person in DB with 'Arnaud Dorgans' primary key
 ```
 
 Map sync, copy with DB
 ```swift
-let person = Mapper<Person>(options: [.sync, .copy]).map(JSON: ["full_name": "Arnaud Dorgans"]) //detached from realm
+let person = Mapper<Person>(options: [.sync, .copy]).map(JSON: ["full_name": "Arnaud Dorgans"]) 
+//get Person from DB with 'Arnaud Dorgans' primary key, or create Person from JSON detached from Realm
+//and then update detached object from JSON
 ```
 
 #### Update
+
+```swift
+var person = Mapper<Person>(options: .sync).map(JSON: ["full_name": "Arnaud Dorgans", "dogs": [["name": "Sansa", "age": 1]]])! 
+// get or create Person in DB with 'Arnaud Dorgans' primary key & update 'dogs' property
+person.update{
+   person = Mapper<Person>(options: .sync).map(JSON: ["full_name": "Arnaud Dorgans"], toObject: $0) 
+   //dogs won't be updated  cause 'dogs' key isn't provided
+   person = Mapper<Person>(options: .sync).map(JSON: ["full_name": "Arnaud Dorgans", "dogs": []], toObject: $0) 
+   //dogs will be updated cause 'dogs' key is provided
+}
+```
+
 Override
 ```swift
 var person = Mapper<Person>(options: .sync).map(JSON: ["full_name": "Arnaud Dorgans", "dogs": [["name": "Sansa", "age": 1]]])!
 person.update{
-   person = Mapper<Person>(options: [.sync, .override]).map(JSON: ["full_name": "Arnaud Dorgans"], toObject: $0) //dogs will be reset to default value [] cause 'dogs' key is not provided
+   person = Mapper<Person>(options: [.sync, .override]).map(JSON: ["full_name": "Arnaud Dorgans"], toObject: $0) 
+   //dogs will be reset to default value [] cause 'dogs' key isn't provided
 }
 ```
 
