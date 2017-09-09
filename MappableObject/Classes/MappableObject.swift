@@ -46,11 +46,6 @@ open class MappableObject: Object, Mappable, StaticMappable {
     }
     
     required public init?(map: Map) {
-        if type(of: self).hasPrimaryKey,
-            let preferredPrimaryKey = type(of: self).preferredPrimaryKey,
-            map.JSON[preferredPrimaryKey] == nil {
-            return nil
-        }
         super.init()
     }
     
