@@ -17,8 +17,8 @@ open class MappableObject: Object, Mappable, StaticMappable {
         return nil
     }
     
-    open class func jsonPrimaryKeyNestedKeyDelimiter() -> String {
-        return "."
+    open class func jsonPrimaryKeyOptions() -> (nested: Bool, delimiter: String) {
+        return (false,".")
     }
     
     private static func _objectForMapping(map: Map) -> Self? {
@@ -40,7 +40,9 @@ open class MappableObject: Object, Mappable, StaticMappable {
             switch map.mappingType {
             case .toJSON:
                 var value = self[primaryKey]
-                value <- map[preferedPrimaryKey, delimiter: type(of: self).jsonPrimaryKeyNestedKeyDelimiter()]
+                value <- map[preferedPrimaryKey,
+                             nested: type(of: self).jsonPrimaryKeyOptions().nested,
+                             delimiter: type(of: self).jsonPrimaryKeyOptions().delimiter]
             case .fromJSON where !self.isSync:
                 self.mappingPrimaryKey(map: map)
             default:
