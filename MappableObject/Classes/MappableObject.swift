@@ -18,7 +18,7 @@ open class MappableObject: Object, Mappable, StaticMappable {
     }
     
     open class func jsonPrimaryKeyOptions() -> (nested: Bool, delimiter: String) {
-        return (false,".")
+        return (true,".")
     }
     
     private static func _objectForMapping(map: Map) -> Self? {
