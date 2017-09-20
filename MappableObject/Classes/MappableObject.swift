@@ -17,6 +17,10 @@ open class MappableObject: Object, Mappable, StaticMappable {
         return nil
     }
     
+    open class func jsonPrimaryKeyNestedKeyDelimiter() -> String {
+        return "."
+    }
+    
     private static func _objectForMapping(map: Map) -> Self? {
         return try! RealmMapper(map: map).map(JSONObject: map.JSON)
     }
@@ -36,7 +40,7 @@ open class MappableObject: Object, Mappable, StaticMappable {
             switch map.mappingType {
             case .toJSON:
                 var value = self[primaryKey]
-                value <- map[preferedPrimaryKey]
+                value <- map[preferedPrimaryKey, delimiter: type(of: self).jsonPrimaryKeyNestedKeyDelimiter()]
             case .fromJSON where !self.isSync:
                 self.mappingPrimaryKey(map: map)
             default:

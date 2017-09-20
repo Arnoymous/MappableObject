@@ -32,6 +32,19 @@ extension ThreadConfined where Self: MappableObject {
     }
 }
 
+extension Dictionary where Key == String {
+    
+    public func nestedValue(at key: String, nestedKeyDelimiter: String) -> Any? {
+        let keyPaths = key.components(separatedBy: nestedKeyDelimiter)
+        return keyPaths.reduce(self, { (JSON, keyPath) -> Any? in
+            if let JSON = (JSON as? [String:Any])?[keyPath] {
+                return JSON
+            }
+            return nil
+        })
+    }
+}
+
 extension BaseMappable where Self: MappableObject {
     internal static var hasPrimaryKey: Bool {
         return preferredPrimaryKey != nil
