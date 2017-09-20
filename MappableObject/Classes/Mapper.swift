@@ -42,7 +42,7 @@ internal class RealmMapper<T: MappableObject> {
             if T.hasPrimaryKey,
                 sync,
                 let preferredPrimaryKey = preferredPrimaryKey,
-                let primaryValue = (JSONObject as? [String:Any])?.nestedValue(at: preferredPrimaryKey, nestedKeyDelimiter: T.jsonPrimaryKeyNestedKeyDelimiter()),
+                let primaryValue = (JSONObject as? [String:Any])?.nestedValue(at: preferredPrimaryKey, nested: T.jsonPrimaryKeyOptions().nested, nestedKeyDelimiter: T.jsonPrimaryKeyOptions().delimiter),
                 let savedObject = realm.object(ofType: T.self, forPrimaryKey: primaryValue) {
                 if !copy {
                     object = savedObject
