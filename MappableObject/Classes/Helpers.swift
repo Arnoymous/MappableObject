@@ -74,17 +74,17 @@ extension BaseMappable where Self: MappableObject {
         }
     }
     
-    public func toJSON(shouldIncludeNilValues: Bool = false) -> [String:Any] {
+    public func toJSON(shouldIncludeNilValues: Bool = false, realm: Realm? = nil) -> [String:Any] {
         var JSON = [String:Any]()
-        try? self.update {
+        try? self.update(realm: realm) {
             JSON = Mapper<Self>(shouldIncludeNilValues: shouldIncludeNilValues).toJSON($0)
         }
         return JSON
     }
     
-    public func toJSONString(shouldIncludeNilValues: Bool = false, prettyPrint: Bool = false) -> String? {
+    public func toJSONString(shouldIncludeNilValues: Bool = false, prettyPrint: Bool = false, realm: Realm? = nil) -> String? {
         var JSONString: String?
-        try? self.update{
+        try? self.update(realm: realm) {
             JSONString = Mapper<Self>(shouldIncludeNilValues: shouldIncludeNilValues).toJSONString($0, prettyPrint: prettyPrint)
         }
         return JSONString
