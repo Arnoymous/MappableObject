@@ -14,10 +14,10 @@ import RealmSwift
 internal class RealmMapper<T: MappableObject> {
     
     var context: RealmMapContext?
-    var realm: Realm?
+    var realm: (()->Realm)?
     var shouldIncludeNilValues: Bool
     
-    init(context: RealmMapContext? = nil, realm: Realm? = nil, shouldIncludeNilValues: Bool = false) {
+    init(context: RealmMapContext? = nil, realm: (()->Realm)? = nil, shouldIncludeNilValues: Bool = false) {
         self.context = context
         self.realm = realm
         self.shouldIncludeNilValues = shouldIncludeNilValues
@@ -30,8 +30,7 @@ internal class RealmMapper<T: MappableObject> {
     func map(JSONObject: Any?, options: RealmMapOptions? = nil) throws -> T? {
         let context = RealmMapContext.from(context: self.context, realm: self.realm, options: options)
         self.context = context
-        let realm = try context.realm ?? Realm()
-        self.realm = realm
+        let realm = try context.realm?() ?? Realm()
         let JSONObject = self.jsonObject(fromJSONObject: JSONObject, context: context)
         
         let preferredPrimaryKey = T.preferredPrimaryKey
@@ -83,7 +82,7 @@ internal class RealmMapper<T: MappableObject> {
 
 extension Mapper where N: MappableObject {
     
-    public var realm: Realm? {
+    public var realm: (()->Realm)? {
         get {
             return (self.context as? RealmMapContext)?.realm
         } set {
@@ -108,15 +107,15 @@ extension Mapper where N: MappableObject {
         }
     }
     
-    public convenience init(context: RealmMapContext? = nil, realm: Realm?, shouldIncludeNilValues: Bool = false) {
+    public convenience init(context: RealmMapContext? = nil, realm: (()->Realm)?, shouldIncludeNilValues: Bool = false) {
         self.init(context: context, realm: realm, options: nil, shouldIncludeNilValues: shouldIncludeNilValues)
     }
     
-    public convenience init(context: RealmMapContext? = nil, realm: Realm? = nil, options: RealmMapOptions, shouldIncludeNilValues: Bool = false) {
+    public convenience init(context: RealmMapContext? = nil, realm: (()->Realm)? = nil, options: RealmMapOptions, shouldIncludeNilValues: Bool = false) {
         self.init(context: context, realm: realm, options: options as RealmMapOptions?, shouldIncludeNilValues: shouldIncludeNilValues)
     }
     
-    private convenience init(context: RealmMapContext?, realm: Realm?, options: RealmMapOptions?, shouldIncludeNilValues: Bool = false) {
+    private convenience init(context: RealmMapContext?, realm: (()->Realm)?, options: RealmMapOptions?, shouldIncludeNilValues: Bool = false) {
         self.init(context: RealmMapContext.from(context: context, realm: realm, options: options) as MapContext, shouldIncludeNilValues: shouldIncludeNilValues)
     }
 }
