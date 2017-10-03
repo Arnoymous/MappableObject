@@ -12,12 +12,12 @@ import ObjectMapper
 
 open class RealmMapContext: MapContext {
     
-    public var realm: Realm?
+    public var realm: (()->Realm)?
     public var options: RealmMapOptions = []
     
     public init() { }
     
-    internal convenience init(options: RealmMapOptions? = nil, realm: Realm? = nil) {
+    internal convenience init(options: RealmMapOptions? = nil, realm: (()->Realm)? = nil) {
         self.init()
         self.realm = realm
         if let options = options {
@@ -25,14 +25,12 @@ open class RealmMapContext: MapContext {
         }
     }
     
-    public static func from(context: RealmMapContext? = nil, realm: Realm? = nil, options: RealmMapOptions? = nil, object: MappableObject? = nil) -> RealmMapContext {
+    public static func from(context: RealmMapContext? = nil, realm: (()->Realm)? = nil, options: RealmMapOptions? = nil, object: MappableObject? = nil) -> RealmMapContext {
         let context = context ?? RealmMapContext()
         if let options = options {
             context.options = options
         }
         if let realm = realm {
-            context.realm = realm
-        } else if let realm = object?.realm, context.realm == nil {
             context.realm = realm
         }
         return context
