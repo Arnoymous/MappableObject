@@ -30,16 +30,21 @@ internal class RealmMapper<T: MappableObject> {
     func map(JSONObject: Any?, options: RealmMapOptions? = nil) throws -> T? {
         let context = RealmMapContext.from(context: self.context, realm: self.realm, options: options)
         self.context = context
-        let realm = try context.realm?() ?? Realm()
         let JSONObject = self.jsonObject(fromJSONObject: JSONObject, context: context)
         
         let preferredPrimaryKey = T.preferredPrimaryKey
         let sync = context.options.contains(.sync)
         let copy = context.options.contains(.copy)
+        
+        let isRealmNeeded = sync
+        let realm = isRealmNeeded ? (try context.realm?() ?? Realm()) : nil
+
         var object: T?
-        try realm.safeWrite {
+        
+        let update = {
             if T.hasPrimaryKey,
                 sync,
+                let realm = realm,
                 let preferredPrimaryKey = preferredPrimaryKey,
                 let primaryValue = (JSONObject as? [String:Any])?.nestedValue(at: preferredPrimaryKey, nested: T.jsonPrimaryKeyOptions().nested, nestedKeyDelimiter: T.jsonPrimaryKeyOptions().delimiter),
                 let savedObject = realm.object(ofType: T.self, forPrimaryKey: primaryValue) {
@@ -49,13 +54,18 @@ internal class RealmMapper<T: MappableObject> {
                     object = T(value: savedObject, schema: RLMSchema.partialShared())
                 }
             }
-            if let _object = object ?? T(map: self.map(fromJSONObject: JSONObject, context: context)) {
-                _ = Mapper<T>(context: self.context, shouldIncludeNilValues: self.shouldIncludeNilValues).map(JSONObject: JSONObject, toObject: _object)
-                if sync && !copy {
+            if var _object = object ?? T(map: self.map(fromJSONObject: JSONObject, context: context)) {
+                _object = Mapper<T>(context: self.context, shouldIncludeNilValues: self.shouldIncludeNilValues).map(JSONObject: JSONObject, toObject: _object)
+                if let realm = realm, sync && !copy {
                     realm.add(_object, update: T.hasPrimaryKey)
                 }
                 object = _object
             }
+        }
+        if let realm = realm {
+            try realm.safeWrite(update)
+        } else {
+            update()
         }
         return object
     }
