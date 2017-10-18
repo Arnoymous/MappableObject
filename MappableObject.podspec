@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'MappableObject'
-  s.version          = '0.3.10'
+  s.version          = '0.3.11'
   s.summary          = 'A Realm extension that serializes arbitrary JSON into MappableObject class'
 
 # This description is used to generate tags and improve search results.
@@ -41,7 +41,7 @@ TODO: Add long description of the pod here.
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   # s.frameworks = 'UIKit', 'MapKit'
-  s.dependency 'RealmSwift', '~> 2.10.0'
-  s.dependency 'ObjectMapper', '~> 2.2'
+  s.dependency 'RealmSwift', '~> 3.0.0'
+  s.dependency 'ObjectMapper', '~> 3.0.0'
 
 end

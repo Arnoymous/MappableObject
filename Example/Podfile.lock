@@ -1,13 +1,13 @@
 PODS:
-  - MappableObject (0.3.7):
-    - ObjectMapper (~> 2.2)
-    - RealmSwift (~> 2.10.0)
-  - ObjectMapper (2.2.8)
-  - Realm (2.10.0):
-    - Realm/Headers (= 2.10.0)
-  - Realm/Headers (2.10.0)
-  - RealmSwift (2.10.0):
-    - Realm (= 2.10.0)
+  - MappableObject (0.3.11):
+    - ObjectMapper (~> 3.0.0)
+    - RealmSwift (~> 3.0.0)
+  - ObjectMapper (3.0.0)
+  - Realm (3.0.0):
+    - Realm/Headers (= 3.0.0)
+  - Realm/Headers (3.0.0)
+  - RealmSwift (3.0.0):
+    - Realm (= 3.0.0)
 
 DEPENDENCIES:
   - MappableObject (from `../`)
@@ -17,10 +17,10 @@ EXTERNAL SOURCES:
     :path: ../
 
 SPEC CHECKSUMS:
-  MappableObject: 059e5a667afb02b42fd23b0534b06353cd16c042
-  ObjectMapper: 3d571bb5af471c779e1160828cd9ad5c4ef90958
-  Realm: 98b3a25643cf6b3e07d2b99fb43fe0eb9c801dec
-  RealmSwift: 34073ad3a31232bbaf7c0db898c037940284cba2
+  MappableObject: c8996129d328ee6027c3d622c47366901c8a0f3e
+  ObjectMapper: 92230db59bf8f341a5c3a3cf0b9fbdde3cf0d87f
+  Realm: dec0de73be8c57506e39db72694d513c189493b3
+  RealmSwift: 44a7090b16d1b22a406c6bf129bdd602db1bbecc
 
 PODFILE CHECKSUM: efb1fe1b942c26f4a67b4b0dec93e3c2958c081a
 
